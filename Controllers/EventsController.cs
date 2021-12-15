@@ -13,7 +13,7 @@ namespace coding_events_practice.Controllers
     public class EventsController : Controller
     {
 
-        static private List<Event> Events = new List<Event>();
+        //static private List<Event> Events = new List<Event>();
 
         // GET: /<controller>/
         public IActionResult Index()
@@ -53,6 +53,26 @@ namespace coding_events_practice.Controllers
                 EventData.Remove(eventId);
             }
 
+            return Redirect("/Events");
+        }
+
+        [HttpGet]
+        [Route("Events/Edit/{eventId}")]
+        public IActionResult Edit(int eventId)
+        {
+            Event editingEvent = EventData.GetById(eventId);
+            ViewBag.eventToEdit = editingEvent;
+            ViewBag.title = "Edit Event " + editingEvent.Name + "(id = " + editingEvent.Id + ")";
+            return View();
+        }
+
+        [HttpPost]
+        [Route("Events/Edit")]
+        public IActionResult SubmitEditEventForm(int eventId, string name, string description)
+        {
+            Event editingEvent = EventData.GetById(eventId);
+            editingEvent.Name = name;
+            editingEvent.Description = description;
             return Redirect("/Events");
         }
     }
